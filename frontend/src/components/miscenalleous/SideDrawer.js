@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import axios from "axios"
 import ChatLoading from '../ChatLoading'
 import UserListItem from '../UserAvatar/UserListItem'
-
+import {Spinner} from '@chakra-ui/spinner'
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("")
@@ -15,7 +15,7 @@ const SideDrawer = () => {
   const [loading, setLoading] = useState(false)
   const [loadingChat, setLoadingChat] = useState()
 
-  const { user } = ChatState()
+  const { user,setSelectedChat,chats,setChats } = ChatState()
   const history = useHistory()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
@@ -63,7 +63,38 @@ const SideDrawer = () => {
     }
   }
 
-  const accessChat = (userId) => { }
+  const accessChat = async(userId) => {
+    try {
+      setLoadingChat(true)
+      const config = {
+        headers: {
+          "Content-type":"application/json",
+          Authorization: `Bearer ${user.token}`
+        },
+      };
+
+      //Access chat or create a chat using a user_id
+      const {data}= await axios.post("/api/chat",{userId},config);
+      
+      if(!chats.find((c)=>c._id===data._id))
+        {
+          setChats([data,...chats])
+        }
+
+      setSelectedChat(data)
+      setLoading(false)
+      onClose();
+
+    } catch (error) {
+      toast({
+        title:"Error fetching the chat ",
+       description:error.message,
+        duration:5000,
+        isClosable:true,
+        position:"bottom-left"
+      })
+    }
+   }
 
   return (
     <>
@@ -134,6 +165,7 @@ const SideDrawer = () => {
                 ))
               )
             }
+            {loadingChat && <Spinner ml="auto" display="flex"/>}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

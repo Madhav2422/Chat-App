@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState} from "react"
-import { useHistory } from "react-router-dom";
+import{useHistory} from "react-router-dom"
 
 const chatContext=createContext()
 
@@ -12,10 +12,10 @@ const ChatProvider=({children})=>{
 
     useEffect(()=>{
         const userInfo=JSON.parse(localStorage.getItem("userInfo"));
-        setUser(userInfo)
+        setUser(userInfo);
 
         if(!userInfo){
-         history.push('/')
+         history.push("/")
         }
     },[history])
 

@@ -4,6 +4,7 @@ import { Box, IconButton, Text } from '@chakra-ui/react'
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { getSender,getSenderfull } from '../config/ChatLogics';
 import ProfileModal from './miscenalleous/ProfileModal';
+import UpdateGroupModel from './miscenalleous/UpdateGroupModel';
 
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -39,10 +40,29 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           ):(
             <>
             {selectedChat.chatName.toUpperCase()}
+            <UpdateGroupModel
+              fetchAgain={fetchAgain}
+              setFetchAgain={setFetchAgain}
+            />
             </>
           )}
 
           </Text>
+          
+          <Box 
+            display="flex"
+            flexDir="column"
+            justifyContent="flex-end"
+            p={3}
+            bg="#E8E8E8"
+            w="100%"
+            h="100%"
+            borderRadius="lg"
+            overflowY="hidden"
+          >
+            {/* All Messages Here */}
+          </Box>
+
         </>
       ) : (
         <Box
